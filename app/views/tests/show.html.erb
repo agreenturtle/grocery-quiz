@@ -1,0 +1,9 @@
+<div class="container">
+  <h1> Question #<%= @test.answers.count+1%></h1>
+  <hr>  
+  Select the image that matches: <strong> <%= @questions.test_question%> </strong>
+  <p>
+  <%= render 'answers/form' %>
+
+</div>
+

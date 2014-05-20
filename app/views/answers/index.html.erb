@@ -1,0 +1,18 @@
+<div class="container">
+  <h1> Applicant's Answers </h1>
+  <hr>
+  <table class="table table-striped table-bordered">
+    <tr>
+      <th>#</th>
+      <th>Question</th>
+      <th>Applicant's Answer</th>
+    </tr>
+    <% @answer.each do |answer| %>
+      <tr>
+        <td><%= answer.id%20 == 0 ? 20 : answer.id%20 %></td>
+        <td><%= answer.question_name %></td>
+        <td><%= image_tag(answer.applicant_answer) %></td>
+      </tr>
+    <% end %>
+  </table>
+</div>

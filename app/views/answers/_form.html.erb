@@ -1,0 +1,13 @@
+<%= bootstrap_form_for([@test, @answers]) do |f| %>
+ <table class="table table-bordered">
+   <tr>
+     <% @options.each do |option|%>
+       <td><%= image_tag(option) %>
+       <%= radio_button_tag('applicant_answer', option, false, :id => 'applicant_answer')%>
+       <%= f.hidden_field :question_name, :value => @questions.test_question%>
+       <% end %>
+   </tr>
+ </table>
+ <%= f.submit 'Submit', :class=>"btn btn-primary"%>
+<%end%>
+  

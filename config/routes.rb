@@ -1,5 +1,10 @@
 GroceryQuiz::Application.routes.draw do
-  get "welcome/index"
+  
+  resources :tests do
+    resources :answers
+  end
+  
+  root 'tests#new'
   # The priority is based upon order of creation: first created -> highest priority.
   # See how all your routes lay out with "rake routes".
 
