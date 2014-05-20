@@ -1,6 +1,15 @@
-
-
 <div class="container"> 
-Comming Soon
-  
+  <h1>Test Results</h1>
+  <hr>
+  <table class="table table-striped">
+    <tr>
+      <th> Tests Taken: </th>
+    </tr>
+    <% @tests.each do |test| %>
+      <tr>
+        <td><%= link_to "Applicant ##{test.id}'s results", test_answers_path(test.id) %> </td>
+      </tr>
+    <% end %>
+  </table>
+  <%= link_to "Back", root_path, :class => "btn btn-primary" %>
 </div>

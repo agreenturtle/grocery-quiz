@@ -1,8 +1,11 @@
 <div class="container">
-  <h1>Grocery Quiz</h1>
-  <p>You will have 2 minutes to finish as many questions as you can. When you are ready click the link below:</p>
-
+  <div class="page-header">
+    <h1>Grocery Quiz
+    <small>Click Start to begin:</small></h1>
+  </div>
+  
   <%= form_for @test do |f| %>
     <%= f.submit 'Start', :class => "btn btn-primary" %>
-    <% end %>
+     <%= link_to "Admin Login", tests_path, :class => "btn btn-warning" %>
+  <% end %>
 </div>

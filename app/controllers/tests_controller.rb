@@ -1,7 +1,8 @@
 class TestsController < ApplicationController
-  #QUESTION_NUMBERS = (1..21).to_a
+  http_basic_authenticate_with name: "James", password: "secret", only: :index
+  
   def index
-    @test = Test.all
+    @tests = Test.all
   end
   
   def show

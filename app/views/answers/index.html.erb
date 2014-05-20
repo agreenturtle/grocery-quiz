@@ -1,18 +1,24 @@
 <div class="container">
   <h1> Applicant's Answers </h1>
   <hr>
+  <h3 class="text-right">Final Score : <%= @score %> / 20 (<%= (@score*100)/20 %>%)</h3>
+  <br>
   <table class="table table-striped table-bordered">
     <tr>
       <th>#</th>
       <th>Question</th>
       <th>Applicant's Answer</th>
+      <th>Score</th>
     </tr>
-    <% @answer.each do |answer| %>
+    <% @answers.each do |answers, score| %>
       <tr>
-        <td><%= answer.id%20 == 0 ? 20 : answer.id%20 %></td>
-        <td><%= answer.question_name %></td>
-        <td><%= image_tag(answer.applicant_answer) %></td>
+        <td><%= answers.id%20 == 0 ? 20 : answers.id%20 %></td>
+        <td><%= answers.question_name %></td>
+        <td><%= image_tag(answers.applicant_answer) %></td>
+        <td><%= score %></td>
       </tr>
     <% end %>
   </table>
+  <%= link_to "Back", tests_path, :class => "btn btn-primary" %>
+  <p>
 </div>
