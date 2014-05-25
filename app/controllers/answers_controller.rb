@@ -22,6 +22,7 @@ class AnswersController < ApplicationController
       )
       redirect_to @test
     else
+      flash[:notice] = "Please select the image that matches the question before submitting"
       redirect_to @test
     end
   end
