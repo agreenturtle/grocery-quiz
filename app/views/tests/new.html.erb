@@ -1,17 +1,12 @@
 <html>
-  <head>
-    <script>
-     
-    </script>
-  </head>
   <body>
 
     <div class="container">
       <div class="page-header">
-        <h1>Grocery Quiz
-        <small>Click Start to begin:</small></h1>
+        <h1>James' Timed Grocery Quiz </h1>
       </div>
-  
+      <h3><small>Welcome to my Grocery Quiz! You will have 2 minutes to answer as many questions as you can, click start to begin. Good Luck!!! </small></h3>
+      <p>
       <%= form_for @test do |f| %>
         <%= f.submit 'Start', :class => "btn btn-primary" %>
         <%= link_to "Admin Login", tests_path, :class => "btn btn-warning" %>
