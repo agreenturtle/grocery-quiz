@@ -3,8 +3,10 @@
    <tr>
      <% @options.each do |option|%>
        <td><%= image_tag(option) %>
-       <%= radio_button_tag('applicant_answer', option, false, :id => 'applicant_answer')%>
+       <%= radio_button_tag('applicant_answer', option, false, :id => 'applicant_answer') %>
        <%= f.hidden_field :question_name, :value => @questions.test_question%>
+       <%= f.hidden_field :start_time, :value => @start_time %>
+       <%= f.hidden_field :current_time, :value => @current_time %>
        <% end %>
    </tr>
  </table>

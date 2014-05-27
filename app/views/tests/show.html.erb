@@ -1,15 +1,41 @@
-<div class="container">  
-  <h1> Question #<%= @test.answers.count+1%></h1>
-  <hr>  
-  <% if flash[:notice] %>
-    <div class='alert alert-danger'> 
-      <%= flash[:notice] %>
+<html>
+  <head>
+    <script>
+      function startTimer(){
+        var start_time = convertToSeconds($('#answer_start_time').val());
+        var current_time = convertToSeconds($('#answer_current_time').val());
+        var time_difference = current_time - start_time;
+        time_difference = (120 - time_difference)*1000;
+        var t = setTimeout(function(){logout()}, time_difference);
+      }
+      
+      function convertToSeconds(time_string){
+        var parts = time_string.split(':');
+        var hours = parts[0] * 3600;
+        var mins = parts[1] * 60;
+        var secs = parts[2] * 1;
+        return (hours + mins + secs);
+      }
+
+      function logout(){
+        window.location.href = '/completed';
+      } 
+    </script>
+  </head>
+  
+  <body onload="startTimer()">
+    <div class="container">  
+      <h1> Question #<%= @test.answers.count+1%></h1>
+      <hr>  
+      <% if flash[:notice] %>
+        <div class='alert alert-danger'> 
+          <%= flash[:notice] %>
+        </div>
+        <p></p>
+      <% end %>
+      Select the image that matches: <strong> <%= @questions.test_question%> </strong>
+      <p>
+      <%= render 'answers/form' %>
     </div>
-    <p></p>
-  <% end %>
-  Select the image that matches: <strong> <%= @questions.test_question%> </strong>
-  <p>
-  <%= render 'answers/form' %>
-
-</div>
-
+  </body>
+</html>
