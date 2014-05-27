@@ -1,6 +1,6 @@
 class TestsController < ApplicationController
   before_action :set_question_order, only: [:show]
-  http_basic_authenticate_with name: "James", password: "password", only: :index
+  http_basic_authenticate_with name: "James", password: "secret", only: :index
   
   def index
     @tests = Test.all
