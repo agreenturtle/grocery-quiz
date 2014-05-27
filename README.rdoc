@@ -1,28 +1,7 @@
 == README
 
-This README would normally document whatever steps are necessary to get the
-application up and running.
+There are two different versions that was made for the Grocery-Quiz.
 
-Things you may want to cover:
+1) On the main branch, a version that doesn't use AJAX but rather a recursive algorithm to cycle through the questions.
 
-* Ruby version
-
-* System dependencies
-
-* Configuration
-
-* Database creation
-
-* Database initialization
-
-* How to run the test suite
-
-* Services (job queues, cache servers, search engines, etc.)
-
-* Deployment instructions
-
-* ...
-
-
-Please feel free to use a different markup language if you do not plan to run
-<tt>rake doc:app</tt>.
+2) On the usingAJAX branch, instead of a recursive algorithm, it uses AJAX to cycle through the questions.
