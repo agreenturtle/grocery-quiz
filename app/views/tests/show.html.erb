@@ -1,12 +1,40 @@
 <html>
   <head>
     <script>
+      function getQuestion(){
+        $.getJSON(document.URL + '/answers/new.json', function(jsonData){
+          console.log(jsonData.test_question);
+          $('h1').html('Question #' + jsonData.question_number);
+          $('h3 small').html('Please select the image that matches: ' + jsonData.test_question);
+          $('td#option_one').html('<img src=' + jsonData.option_one +'> <input type="radio" id="option_one" name="option" value=' +jsonData.option_one + '> ');
+          $('input#option_one').click(function(){
+            console.log('clicked on option_one');
+            $('td#option_one').html('<img src=' + jsonData.option_one +'> <input type="radio" checked=true id="option_one" name="option" value=' +jsonData.option_one + '> ');
+          })
+          $('td#option_two').html('<img src=' + jsonData.option_two +'> <input type="radio" id="option_two" name="option" value=' +jsonData.option_two + '> ');
+          $('td#option_three').html('<img src=' + jsonData.option_three +'> <input type="radio" id="option_three" name="option" value=' +jsonData.option_three + '> ');
+          $('td#option_four').html('<img src=' + jsonData.option_four +'> <input type="radio" id="option_four" name="option" value=' +jsonData.option_four + '> ');
+        });
+      }
+      
+      function submit(){
+        console.log('submitting');
+        if (document.getElementById('option_one').checked){
+          console.log('here');
+          console.log('----' + document.option.value);
+        }
+        else{
+          console.log('No Items Selected');
+          $('div#alert_message').html('<div class="alert alert-danger"> Please select an image before submitting.</div>');
+        }
+      }
+      
       function startTimer(){
         var start_time = convertToSeconds($('#answer_start_time').val());
         var current_time = convertToSeconds($('#answer_current_time').val());
         var time_difference = current_time - start_time;
         time_difference = (120 - time_difference)*1000;
-        var t = setTimeout(function(){logout()}, time_difference);
+        var t = setTimeout(function(){logout()}, time_difference);      
       }
       
       function convertToSeconds(time_string){
@@ -23,19 +51,29 @@
     </script>
   </head>
   
-  <body onload="startTimer()">
-    <div class="container">  
-      <h1> Question #<%= @test.answers.count+1%></h1>
-      <hr>  
-      <% if flash[:notice] %>
-        <div class='alert alert-danger'> 
-          <%= flash[:notice] %>
-        </div>
-        <p></p>
-      <% end %>
-      Select the image that matches: <strong> <%= @questions.test_question%> </strong>
+  <body onload="getQuestion()">
+    <div class="container">
+      <h1></h1>
+      <hr>
+      
+      <div id="alert_message"></div>
+      
+      <p><p>
+      <h3><small></small><h3>
       <p>
-      <%= render 'answers/form' %>
+      <table class="table table-bordered">
+        <tr>
+          <td id='option_one'>
+          </td>
+          <td id='option_two'>
+          </td>
+          <td id='option_three'>
+          </td>
+          <td id='option_four'>
+          </td>
+        </tr>
+      </table>
+      <button type="button" class="btn btn-primary" id="submit" onclick="submit()">Submit</button>
     </div>
   </body>
 </html>

@@ -6,7 +6,7 @@ class CreateQuestions < ActiveRecord::Migration
       t.string :option_two
       t.string :option_three
       t.string :option_four
-
+      t.string :question_number
       t.timestamps
     end
   end

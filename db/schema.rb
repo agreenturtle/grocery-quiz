@@ -27,11 +27,17 @@ ActiveRecord::Schema.define(version: 20140519054730) do
     t.string   "option_two"
     t.string   "option_three"
     t.string   "option_four"
+    t.string   "question_number"
     t.datetime "created_at"
     t.datetime "updated_at"
   end
 
   create_table "tests", force: true do |t|
+    t.string   "score"
+    t.integer  "total_questions_answered"
+    t.string   "start_time"
+    t.string   "finished_time"
+    t.string   "time_taken"
     t.datetime "created_at"
     t.datetime "updated_at"
   end

@@ -1,4 +1,5 @@
 class AnswersController < ApplicationController
+  before_action :init_session_variables, only: [:new]
   http_basic_authenticate_with name: "James", password: "secret", only: :index
   
   def index
@@ -11,6 +12,14 @@ class AnswersController < ApplicationController
   
   def show
     @answer = Answer.find(params[:id])
+  end
+  
+  def new
+    @test = Test.find(params[:test_id])
+    @question = Question.find(session[:question_order][@test.answers.count].to_i)
+    @question.question_number = @test.answers.count + 1;
+    @optons = [@question.option_one, @question.option_two, @question.option_three, @question.option_four].shuffle
+    session[:option_order] = @option
   end
   
   def create
@@ -49,5 +58,13 @@ class AnswersController < ApplicationController
         end
       end
       return @@score
+    end
+    
+    def init_session_variables
+      if session[:question_order].nil?
+        session[:question_order] = (1..20).to_a.shuffle
+        time = Time.new
+        session[:start_time] = time.strftime("%H:%M:%S")
+      end
     end
 end

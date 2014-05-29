@@ -3,11 +3,15 @@
   <hr>
   <table class="table table-striped">
     <tr>
-      <th> Tests Taken: </th>
+      <th> Tests Taken </th>
+      <th> Time Taken </th>
+      <th> Questions Answered </th>
     </tr>
     <% @tests.each do |test| %>
       <tr>
         <td><%= link_to "Applicant ##{test.id}'s results", test_answers_path(test.id) %> </td>
+        <td><%= test.time_taken %></td>
+        <td><%= test.total_questions_answered %>
       </tr>
     <% end %>
   </table>
