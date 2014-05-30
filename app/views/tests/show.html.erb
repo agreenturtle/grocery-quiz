@@ -3,25 +3,63 @@
     <script>
       function getQuestion(){
         $.getJSON(document.URL + '/answers/new.json', function(jsonData){
-          console.log(jsonData.test_question);
           $('h1').html('Question #' + jsonData.question_number);
+          var options_array = ['<img src=' + jsonData.option_one +'> <p align="center"> <input type="radio" id="option_one" name="option" value=' + jsonData.option_one + '> </p>',
+          '<img src=' + jsonData.option_two +'> <p align="center"> <input type="radio" id="option_two" name="option" value=' +jsonData.option_two + '> </p>',
+          '<img src=' + jsonData.option_three +'> <p align="center"> <input type="radio" id="option_three" name="option" value=' +jsonData.option_three + '></p>',
+          '<img src=' + jsonData.option_four +'> <p align="center"> <input type="radio" id="option_four" name="option" value=' +jsonData.option_four + '></p>'];
+          
+          options_array = shuffle(options_array);
+          
           $('h3 small').html('Please select the image that matches: ' + jsonData.test_question);
-          $('td#option_one').html('<img src=' + jsonData.option_one +'> <input type="radio" id="option_one" name="option" value=' +jsonData.option_one + '> ');
+          
+          $('td#table_cell_one').html(options_array[0]);     
+          $('td#table_cell_two').html(options_array[1]);
+          $('td#table_cell_three').html(options_array[2]);
+          $('td#table_cell_four').html(options_array[3]);
+          
           $('input#option_one').click(function(){
-            console.log('clicked on option_one');
-            $('td#option_one').html('<img src=' + jsonData.option_one +'> <input type="radio" checked=true id="option_one" name="option" value=' +jsonData.option_one + '> ');
-          })
-          $('td#option_two').html('<img src=' + jsonData.option_two +'> <input type="radio" id="option_two" name="option" value=' +jsonData.option_two + '> ');
-          $('td#option_three').html('<img src=' + jsonData.option_three +'> <input type="radio" id="option_three" name="option" value=' +jsonData.option_three + '> ');
-          $('td#option_four').html('<img src=' + jsonData.option_four +'> <input type="radio" id="option_four" name="option" value=' +jsonData.option_four + '> ');
+            document.getElementById('option_one').checked = true;
+          });
+          $('input#option_two').click(function(){
+            document.getElementById('option_two').checked = true;
+          });
+          $('input#option_three').click(function(){
+            document.getElementById('option_three').checked = true;
+          });
+          $('input#option_four').click(function(){
+            document.getElementById('option_four').checked = true;
+          });
+          var start_time = jsonData.start_time;
+          startTimer(start_time);
         });
+        
       }
       
       function submit(){
-        console.log('submitting');
-        if (document.getElementById('option_one').checked){
-          console.log('here');
-          console.log('----' + document.option.value);
+        if (document.getElementById('option_one').checked == true){
+          var text = document.getElementById('question_text').innerHTML;
+          parts = text.split(':');
+          $.post(document.URL + '/answers?value=' + $('input#option_one').val() + '&question=' + parts[1]);
+          location.reload();
+        }
+        else if (document.getElementById('option_two').checked == true){
+          var text = document.getElementById('question_text').innerHTML;
+          parts = text.split(':');
+          $.post(document.URL + '/answers?value=' + $('input#option_two').val() + '&question=' + parts[1]);
+          location.reload();
+        }
+        else if (document.getElementById('option_three').checked == true){
+          var text = document.getElementById('question_text').innerHTML;
+          parts = text.split(':');
+          $.post(document.URL + '/answers?value=' + $('input#option_three').val() + '&question=' + parts[1]);
+          location.reload();
+        }
+        else if (document.getElementById('option_four').checked == true){
+          var text = document.getElementById('question_text').innerHTML;
+          parts = text.split(':');
+          $.post(document.URL + '/answers?value=' + $('input#option_four').val() + '&question=' + parts[1]);
+          location.reload();
         }
         else{
           console.log('No Items Selected');
@@ -29,9 +67,31 @@
         }
       }
       
-      function startTimer(){
-        var start_time = convertToSeconds($('#answer_start_time').val());
-        var current_time = convertToSeconds($('#answer_current_time').val());
+      function shuffle(array) {
+        var currentIndex = array.length
+          , temporaryValue
+          , randomIndex
+          ;
+
+        // While there remain elements to shuffle...
+        while (0 !== currentIndex) {
+
+          // Pick a remaining element...
+          randomIndex = Math.floor(Math.random() * currentIndex);
+          currentIndex -= 1;
+
+          // And swap it with the current element.
+          temporaryValue = array[currentIndex];
+          array[currentIndex] = array[randomIndex];
+          array[randomIndex] = temporaryValue;
+        }
+        return array;
+      }
+      
+      function startTimer(start_time){
+        var date = new Date;
+        var current_time = convertToSecondsFromDate(date);
+        start_time = convertToSeconds(start_time);
         var time_difference = current_time - start_time;
         time_difference = (120 - time_difference)*1000;
         var t = setTimeout(function(){logout()}, time_difference);      
@@ -44,8 +104,16 @@
         var secs = parts[2] * 1;
         return (hours + mins + secs);
       }
+      
+      function convertToSecondsFromDate(date){
+        var hours = date.getHours() * 3600;
+        var mins = date.getMinutes() * 60;
+        var secs = date.getSeconds() * 1;
+        return(hours+mins+secs);
+      }
 
       function logout(){
+        console.log("LOGOUT");
         window.location.href = '/completed';
       } 
     </script>
@@ -59,17 +127,17 @@
       <div id="alert_message"></div>
       
       <p><p>
-      <h3><small></small><h3>
+      <h3><small id="question_text"></small><h3>
       <p>
-      <table class="table table-bordered">
+      <table class="table table-bordered"> 
         <tr>
-          <td id='option_one'>
+          <td id='table_cell_one'>
           </td>
-          <td id='option_two'>
+          <td id='table_cell_two'>
           </td>
-          <td id='option_three'>
+          <td id='table_cell_three'>
           </td>
-          <td id='option_four'>
+          <td id='table_cell_four'>
           </td>
         </tr>
       </table>

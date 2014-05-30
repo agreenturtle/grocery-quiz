@@ -8,6 +8,7 @@ class AnswersController < ApplicationController
     @results = score_results(@answers)
     @score = score(@answers)
     @answers = @answers.zip(@results)
+    @count = 0;
   end
   
   def show
@@ -18,22 +19,16 @@ class AnswersController < ApplicationController
     @test = Test.find(params[:test_id])
     @question = Question.find(session[:question_order][@test.answers.count].to_i)
     @question.question_number = @test.answers.count + 1;
-    @optons = [@question.option_one, @question.option_two, @question.option_three, @question.option_four].shuffle
-    session[:option_order] = @option
+    @test.start_time = session[:start_time]
   end
   
   def create
     @test = Test.find(params[:test_id])
-    if !params["applicant_answer"].blank?
-      @answer = @test.answers.create(
-        question_name: params["answer"]["question_name"],
-        applicant_answer: params["applicant_answer"]
-      )
-      redirect_to @test
-    else
-      flash[:notice] = "Please select the image that matches the question before submitting"
-      redirect_to @test
-    end
+    @answer= @test.answers.create(
+      question_name: params[:question],
+      applicant_answer: params[:value]
+    );
+    redirect_to @test
   end
   
   private  

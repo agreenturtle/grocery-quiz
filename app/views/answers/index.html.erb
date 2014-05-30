@@ -12,7 +12,8 @@
     </tr>
     <% @answers.each do |answers, score| %>
       <tr>
-        <td><%= answers.id%20 == 0 ? 20 : answers.id%20 %></td>
+        <% @count = @count+1%>
+        <td><%= @count %></td>
         <td><%= answers.question_name %></td>
         <td><%= image_tag(answers.applicant_answer) %></td>
         <td><%= score %></td>
