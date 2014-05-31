@@ -1,17 +1,21 @@
 <div class="container"> 
   <h1>Test Results</h1>
   <hr>
-  <table class="table table-striped">
+  <table class="table table-striped table-bordered">
     <tr>
-      <th> Tests Taken </th>
+      <th> Applicant </th>
+      <th> Total Questions Answered </th>
+      <th> Total Correct Answers </th>
+      <th> Score </th>
       <th> Time Taken </th>
-      <th> Questions Answered </th>
     </tr>
     <% @tests.each do |test| %>
       <tr>
         <td><%= link_to "Applicant ##{test.id}'s results", test_answers_path(test.id) %> </td>
-        <td><%= test.time_taken %></td>
-        <td><%= test.total_questions_answered %>
+        <td><%= test.total_questions_answered %></td>
+        <td><%= test.score %>
+        <td><%= (test.score*100)/20 %></td>
+        <td><%= test.time_taken.nil? ? "Incomplete" : test.time_taken %></td>        
       </tr>
     <% end %>
   </table>

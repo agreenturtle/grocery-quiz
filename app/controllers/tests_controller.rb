@@ -6,11 +6,6 @@ class TestsController < ApplicationController
     @tests = Test.all
     @tests.each do |test|
       test.total_questions_answered = test.answers.count
-      if test.finished_time.nil?
-        test.time_taken = "02:00"
-      else
-        test.time_taken = calculate_time_taken(test)
-      end
     end
   end
   
@@ -19,29 +14,15 @@ class TestsController < ApplicationController
     if @test.answers.count == 20
       time = Time.new
       @test.finished_time = time.strftime("%H:%M:%S")
+      @test.time_taken = calculate_time_taken(@test)
+      @test.save
+      
       render "completed"
     end
-    
-    #else
-    #  @start_time = session[:start_time]
-    #  time = Time.new
-    #  @current_time = time.strftime("%H:%M:%S")
-    #  if session[:count] != @test.answers.count
-    #    session[:count] = @test.answers.count
-    #    @answers = @test.answers.build
-    #    @questions = Question.find(session[:question_order][@test.answers.count].to_i)
-    #    session[:option_order] = [@questions.option_one, @questions.option_two, @questions.option_three, @questions.option_four]
-    #    @options = session[:option_order].shuffle
-    #  else
-    #    @answers = @test.answers.build
-    #    @questions = Question.find(session[:question_order][@test.answers.count].to_i)
-    #    @options = session[:option_order]
-    #  end
-    #end
   end
   
   def new
-    session[:question_order] = nil
+    session[:start_time] = nil
     @test = Test.new
   end
   
@@ -51,24 +32,44 @@ class TestsController < ApplicationController
     redirect_to @test
   end
   
+  def completed
+    @test = Test.find(params[:id])
+    @test.time_taken = "02:00"
+    @test.save
+    
+    render "completed"
+  end
+  
   private
     def init_start_time
       @test = Test.find(params[:id])
-      if session[:question_order].nil?
+      if session[:start_time].nil?
+        puts 'initializing start time'
         time = Time.new
         session[:start_time] = time.strftime("%H:%M:%S")
         @test.start_time = session[:start_time]
+        @test.save
       end
     end
-    
+  
     def calculate_time_taken(test)
       time_taken = convert_to_seconds(test.finished_time) - convert_to_seconds(test.start_time)
       if time_taken > 60
         mins = "01"
         secs = time_taken - 60
-        return mins << ':' << secs.to_s
+        if secs < 10 #secs will not be 0 because time_taken can't be 60 here
+          secs_string = "0" << secs.to_s
+        else
+          secs_string = secs.to_s
+        end
+        return mins << ':' << secs_string
       elsif time_taken < 60
-        return "00:" << time_taken.to_s
+        if time_taken < 10
+          time_taken_string = "0" + time_taken.to_s
+        else
+          time_taken_string = time_taken.to_s
+        end
+        return "00:" << time_taken_string
       else #time_taken == 60
         return "01:00"
       end

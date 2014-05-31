@@ -1,9 +1,12 @@
 GroceryQuiz::Application.routes.draw do
   
   resources :tests do
+    member do
+      get :completed
+    end
     resources :answers
   end
-  get 'completed' => 'tests#completed'
+  
   root 'tests#new'
   # The priority is based upon order of creation: first created -> highest priority.
   # See how all your routes lay out with "rake routes".

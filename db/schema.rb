@@ -17,6 +17,7 @@ ActiveRecord::Schema.define(version: 20140519054730) do
     t.integer  "test_id"
     t.string   "question_name"
     t.string   "applicant_answer"
+    t.integer  "is_correct"
     t.datetime "created_at"
     t.datetime "updated_at"
   end
@@ -33,8 +34,8 @@ ActiveRecord::Schema.define(version: 20140519054730) do
   end
 
   create_table "tests", force: true do |t|
-    t.string   "score"
-    t.integer  "total_questions_answered"
+    t.integer  "score",                    default: 0
+    t.integer  "total_questions_answered", default: 0
     t.string   "start_time"
     t.string   "finished_time"
     t.string   "time_taken"

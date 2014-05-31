@@ -3,12 +3,9 @@ class AnswersController < ApplicationController
   http_basic_authenticate_with name: "James", password: "secret", only: :index
   
   def index
+    @test = Test.find(params[:test_id])
     @answers = Answer.select { |a| a.test_id.to_i == params[:test_id].to_i }
     @questions = Question.new
-    @results = score_results(@answers)
-    @score = score(@answers)
-    @answers = @answers.zip(@results)
-    @count = 0;
   end
   
   def show
@@ -28,38 +25,26 @@ class AnswersController < ApplicationController
       question_name: params[:question],
       applicant_answer: params[:value]
     );
+    @answer.is_correct = is_correct_answer(@answer, @test)
+    @answer.save
+
     redirect_to @test
   end
   
   private  
-    def score_results(answers)
-      @@results = []
-      
-      answers.each do |a|
-        if Question.where(option_one: a.applicant_answer).take
-          @@results << 1
-        else
-          @@results << 0
-        end
+    def is_correct_answer(answer, test)
+      if Question.find_by option_one: answer.applicant_answer
+        test.score += 1
+        test.save
+        return 1
+      else
+        return 0
       end
-      return @@results
-    end
-  
-    def score(answers)
-      @@score = 0
-      answers.each do |a|
-        if Question.where(option_one: a.applicant_answer).take
-          @@score += 1
-        end
-      end
-      return @@score
     end
     
     def init_session_variables
       if session[:question_order].nil?
         session[:question_order] = (1..20).to_a.shuffle
-        time = Time.new
-        session[:start_time] = time.strftime("%H:%M:%S")
       end
     end
 end

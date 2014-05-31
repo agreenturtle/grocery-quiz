@@ -92,9 +92,13 @@
         var date = new Date;
         var current_time = convertToSecondsFromDate(date);
         start_time = convertToSeconds(start_time);
+        console.log('start time: ' + start_time);
+        console.log('current time: ' + current_time);
+        
         var time_difference = current_time - start_time;
         time_difference = (120 - time_difference)*1000;
-        var t = setTimeout(function(){logout()}, time_difference);      
+        console.log(time_difference);
+        var t = setTimeout(function(){logout()}, time_difference);
       }
       
       function convertToSeconds(time_string){
@@ -113,8 +117,7 @@
       }
 
       function logout(){
-        console.log("LOGOUT");
-        window.location.href = '/completed';
+        window.location.href = document.URL + '/completed';
       } 
     </script>
   </head>
